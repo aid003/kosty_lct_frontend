@@ -56,6 +56,8 @@ export function AIPanel() {
                   </span>
                 </div>
                 <Progress
+                  className="bg-muted/40"
+                  indicatorClassName="bg-slate-500"
                   value={
                     last
                       ? Math.max(
@@ -79,6 +81,8 @@ export function AIPanel() {
                   </span>
                 </div>
                 <Progress
+                  className="bg-muted/40"
+                  indicatorClassName="bg-slate-500"
                   value={
                     last
                       ? Math.max(

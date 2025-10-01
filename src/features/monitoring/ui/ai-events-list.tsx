@@ -33,13 +33,22 @@ export function AIEventsList({ events }: AIEventsListProps) {
           <div key={`${e.type}-${idx}`} className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{e.type}</Badge>
+                <Badge
+                  variant="outline"
+                  className="text-xs uppercase tracking-wide text-muted-foreground"
+                >
+                  {e.type}
+                </Badge>
                 <span className="text-xs text-muted-foreground">
                   severity: {e.severity.toFixed(2)}
                 </span>
               </div>
             </div>
-            <Progress value={Math.max(0, Math.min(100, e.severity * 100))} />
+            <Progress
+              className="bg-muted/40"
+              indicatorClassName="bg-slate-500"
+              value={Math.max(0, Math.min(100, e.severity * 100))}
+            />
             {idx < sortedEvents.length - 1 && <Separator />}
           </div>
         ))}
@@ -47,4 +56,3 @@ export function AIEventsList({ events }: AIEventsListProps) {
     </ScrollArea>
   );
 }
-

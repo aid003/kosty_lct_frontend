@@ -114,11 +114,11 @@ interface StatusCardProps {
 
 function StatusCard({ title, status }: StatusCardProps) {
   const statusColors = {
-    connected: 'bg-green-500',
-    connecting: 'bg-yellow-500',
-    disconnected: 'bg-gray-500',
-    error: 'bg-red-500',
-  };
+    connected: 'bg-slate-400',
+    connecting: 'bg-slate-300',
+    disconnected: 'bg-slate-500',
+    error: 'bg-slate-700',
+  } as const;
 
   const statusLabels = {
     connected: 'Подключено',
@@ -156,4 +156,3 @@ function DataCard({ title, data, children }: DataCardProps) {
     </div>
   );
 }
-

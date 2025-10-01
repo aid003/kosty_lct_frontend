@@ -12,12 +12,12 @@ interface ConnectionBadgeProps {
 export function ConnectionBadge({ status }: ConnectionBadgeProps) {
   const className =
     status === 'connected'
-      ? 'text-green-600 border-green-600'
+      ? 'border-slate-400 text-muted-foreground'
       : status === 'connecting'
-        ? 'text-yellow-600 border-yellow-600'
+        ? 'border-dashed border-slate-400 text-muted-foreground'
         : status === 'error'
-          ? 'text-red-600 border-red-600'
-          : '';
+          ? 'border-slate-700 text-slate-700'
+          : 'border-slate-300 text-muted-foreground';
 
   return (
     <Badge variant="outline" className={className}>
@@ -25,4 +25,3 @@ export function ConnectionBadge({ status }: ConnectionBadgeProps) {
     </Badge>
   );
 }
-

@@ -114,7 +114,7 @@ export function RealtimeCharts() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <ChartCard
-          title={`Heart Rate (BPM) - ${bpmPoints} точек (${subtitle})`}
+          title={`Heart Rate (BPM)`}
           data={bpmChartData}
           series={[{ label: "BPM", color: "rgb(59, 130, 246)" }]}
           yLabel="сек / BPM"
@@ -123,7 +123,7 @@ export function RealtimeCharts() {
         />
 
         <ChartCard
-          title={`Uterine Contractions (UC) - ${ucPoints} точек (${subtitle})`}
+          title={`Uterine Contractions (UC)`}
           data={ucChartData}
           series={[{ label: "UC", color: "rgb(16, 185, 129)" }]}
           yLabel="сек / UC"
