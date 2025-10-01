@@ -40,17 +40,23 @@ export function RealtimeUPlot({
 }: RealtimeUPlotProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const plotRef = useRef<UPlotApi | null>(null);
+  const legendContainerRef = useRef<HTMLDivElement | null>(null);
+  const legendElRef = useRef<HTMLElement | null>(null);
+  const originalLegendParentRef = useRef<HTMLElement | null>(null);
 
   const desiredWidth = useMemo(() => {
     const xs = (data?.[0] as Array<number | null>) ?? [];
     if (!xs.length) return 400;
-    const first = xs.find((v) => typeof v === "number") as number | undefined;
-    const last = [...xs].reverse().find((v) => typeof v === "number") as
-      | number
-      | undefined;
-    if (first == null || last == null) return 400;
+
+    const numeric = xs.filter((v): v is number => typeof v === "number");
+    if (!numeric.length) return 400;
+
+    const first = numeric[0];
+    const last = numeric[numeric.length - 1];
     const range = Math.max(0, last - first);
-    const widthPx = Math.round(range * pixelsPerSecond);
+    // если временной диапазон маленький, используем количество точек как запас
+    const effectiveRange = Math.max(range, numeric.length);
+    const widthPx = Math.round(effectiveRange * pixelsPerSecond);
     return Math.max(400, widthPx);
   }, [data, pixelsPerSecond]);
 
@@ -116,6 +122,18 @@ export function RealtimeUPlot({
       const plot = new UPlot(opts, data, root);
       plotRef.current = plot;
 
+      const legendEl = root.querySelector(".u-legend") as HTMLElement | null;
+      if (legendEl) {
+        legendElRef.current = legendEl;
+        originalLegendParentRef.current = legendEl.parentElement as HTMLElement | null;
+        legendEl.classList.add("text-xs", "text-muted-foreground");
+
+        if (scrollable && legendContainerRef.current) {
+          legendContainerRef.current.innerHTML = "";
+          legendContainerRef.current.appendChild(legendEl);
+        }
+      }
+
       if ("ResizeObserver" in window) {
         resizeObs = new ResizeObserver((entries) => {
           for (const entry of entries) {
@@ -136,6 +154,11 @@ export function RealtimeUPlot({
 
     return () => {
       disposed = true;
+      const legendEl = legendElRef.current;
+      const originalParent = originalLegendParentRef.current;
+      if (legendEl && originalParent && legendEl.parentElement !== originalParent) {
+        originalParent.appendChild(legendEl);
+      }
       if (resizeObs) resizeObs.disconnect();
       if (plotRef.current) {
         plotRef.current.destroy();
@@ -157,11 +180,34 @@ export function RealtimeUPlot({
     }
   }, [desiredWidth, height, scrollable]);
 
+  useEffect(() => {
+    const legendEl = legendElRef.current;
+    if (!legendEl) return;
+
+    if (scrollable) {
+      if (legendContainerRef.current && legendEl.parentElement !== legendContainerRef.current) {
+        legendContainerRef.current.innerHTML = "";
+        legendContainerRef.current.appendChild(legendEl);
+      }
+    } else {
+      const originalParent = originalLegendParentRef.current;
+      if (originalParent && legendEl.parentElement !== originalParent) {
+        originalParent.appendChild(legendEl);
+      }
+    }
+  }, [scrollable]);
+
   if (scrollable) {
     return (
-      <div className="w-full overflow-x-auto">
-        <div style={{ width: desiredWidth }}>
-          <div ref={rootRef} />
+      <div className="space-y-2">
+        <div
+          ref={legendContainerRef}
+          className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground"
+        />
+        <div className="w-full overflow-x-auto">
+          <div style={{ width: desiredWidth }}>
+            <div ref={rootRef} />
+          </div>
         </div>
       </div>
     );

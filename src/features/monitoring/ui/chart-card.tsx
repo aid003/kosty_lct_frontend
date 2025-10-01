@@ -13,15 +13,31 @@ interface ChartCardProps {
   series: SeriesDef[];
   yLabel?: string;
   height?: number;
+  scrollable?: boolean;
+  pixelsPerSecond?: number;
 }
 
-export function ChartCard({ title, data, series, yLabel, height = 300 }: ChartCardProps) {
+export function ChartCard({
+  title,
+  data,
+  series,
+  yLabel,
+  height = 300,
+  scrollable,
+  pixelsPerSecond,
+}: ChartCardProps) {
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-      <RealtimeUPlot data={data} series={series} yLabel={yLabel} height={height} />
+      <RealtimeUPlot
+        data={data}
+        series={series}
+        yLabel={yLabel}
+        height={height}
+        scrollable={scrollable}
+        pixelsPerSecond={pixelsPerSecond}
+      />
     </div>
   );
 }
-
 
