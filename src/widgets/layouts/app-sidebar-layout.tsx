@@ -61,7 +61,7 @@ function SidebarBrand() {
           isCollapsed && "opacity-0"
         )}
       >
-        Kosty Monitor
+        Fetal Monitor
       </span>
     </div>
   );
