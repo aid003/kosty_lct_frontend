@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "говночист",
+  title: "lct",
   description: "lct frontend",
 };
 

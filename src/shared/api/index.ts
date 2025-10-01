@@ -2,5 +2,6 @@
  * API слой приложения
  */
 
-export * from './websocket';
-
+export * from "./patients";
+export * from "./studies";
+export * from "./websocket";
